@@ -2,6 +2,7 @@ package com.prateekj.models;
 
 import com.prateekj.exceptions.IncompatibleFields;
 import com.prateekj.helperModels.Person;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -14,6 +15,13 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class CVSParserTest {
+  private CVSParser cvsParser;
+
+  @Before
+  public void setUp() throws Exception {
+    cvsParser = new CVSParser();
+  }
+
   @Test
   public void shouldParseFileIntoObject() throws IOException, IllegalAccessException, InstantiationException {
     String actualFileData = "roll_no,name,age\n1,Prateek,19\n2,Prayas,15";
@@ -21,7 +29,7 @@ public class CVSParserTest {
     FileOutputStream fos = new FileOutputStream(aFile);
     fos.write(actualFileData.getBytes());
 
-    List<Person> persons = new CVSParser().parse(aFile, Person.class);
+    List<Person> persons = cvsParser.parse(aFile, Person.class);
 
     assertThat(persons, hasSize(2));
     assertThat(persons.get(0), is(new Person().withRoll(1).withName("Prateek").withAge(19)));
@@ -35,7 +43,7 @@ public class CVSParserTest {
     FileOutputStream fos = new FileOutputStream(aFile);
     fos.write(actualFileData.getBytes());
 
-    new CVSParser().parse(aFile, Person.class);
+    cvsParser.parse(aFile, Person.class);
   }
 
 }

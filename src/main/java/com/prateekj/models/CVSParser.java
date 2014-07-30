@@ -13,11 +13,9 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 public class CVSParser {
-  private HashMap<String, Integer> headingsMap;
   private Reader reader;
 
   public CVSParser() {
-    headingsMap = new HashMap<String, Integer>();
     reader = new Reader();
   }
 
@@ -25,25 +23,24 @@ public class CVSParser {
     List<String> fileRecords = new ArrayList<String>(asList(reader.readFile(fileToBeParse).split("\n")));
     String[] headings = fileRecords.remove(0).split(",");
     throwExceptionIfColumnsAreNotCompatible(dClass, headings);
-    prepareHeadingIndexMap(headings);
-    List<T> resultObjects = matchObjects(fileRecords, dClass);
+    HashMap<String, Integer> headingIndexMap = prepareHeadingIndexMap(headings);
+    List<T> resultObjects = matchObjects(fileRecords, dClass, headingIndexMap);
     return resultObjects;
   }
 
-  private <T> List<T> matchObjects(List<String> fileRecords, Class<T> dClass) throws IllegalAccessException, InstantiationException {
+  private <T> List<T> matchObjects(List<String> fileRecords, Class<T> dClass, HashMap<String, Integer> headingIndexMap) throws IllegalAccessException, InstantiationException {
     ArrayList<T> recordObject = new ArrayList<T>();
-    Field[] requestedObjectFields = dClass.getDeclaredFields();
     for (String record : fileRecords) {
       String[] recordInCell = record.split(",");
       T newInstance = dClass.newInstance();
-      assignCellsRecordsToFields(recordInCell, requestedObjectFields, newInstance);
+      assignCellsRecordsToFields(recordInCell, headingIndexMap, newInstance);
       recordObject.add(newInstance);
     }
     return recordObject;
   }
 
-  private <T> void assignCellsRecordsToFields(String[] recordInCell, Field[] requiredObjectFields, T newInstance) throws IllegalAccessException {
-    for (Field objectField : requiredObjectFields) {
+  private <T> void assignCellsRecordsToFields(String[] recordInCell, HashMap<String, Integer> headingsMap, T newInstance) throws IllegalAccessException {
+    for (Field objectField : newInstance.getClass().getDeclaredFields()) {
       objectField.setAccessible(true);
       String cellValue = recordInCell[headingsMap.get(prepareClassFieldNames(objectField))];
       assignFieldAccordingToType(newInstance, objectField, cellValue);
@@ -64,12 +61,14 @@ public class CVSParser {
           annotation.name();
   }
 
-  private void prepareHeadingIndexMap(String[] headings) {
+  private HashMap<String, Integer> prepareHeadingIndexMap(String[] headings) {
+    HashMap<String, Integer> headingsMap = new HashMap<String, Integer>();
     int index = 0;
     for (String heading : headings) {
       headingsMap.put(heading, index);
       index++;
     }
+    return headingsMap;
   }
 
   private <T> void throwExceptionIfColumnsAreNotCompatible(Class<T> dClass, String[] headings) {
