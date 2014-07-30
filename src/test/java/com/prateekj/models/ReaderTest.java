@@ -18,8 +18,8 @@ public class ReaderTest {
     FileOutputStream fos = new FileOutputStream(aFile);
     fos.write(actualFileData.getBytes());
 
-    Reader reader = new Reader(aFile);
-    String expectedFileContent = reader.readFile();
+    Reader reader = new Reader();
+    String expectedFileContent = reader.readFile(aFile);
 
     assertThat(expectedFileContent, is(actualFileData));
 
@@ -34,8 +34,8 @@ public class ReaderTest {
     FileOutputStream fos = new FileOutputStream(aFile);
     fos.write(actualFileData.getBytes());
 
-    Reader reader = new Reader(aFile);
-    String data = reader.readFile();
+    Reader reader = new Reader();
+    String data = reader.readFile(aFile);
 
     assertThat(data, is(expectedFileData));
   }

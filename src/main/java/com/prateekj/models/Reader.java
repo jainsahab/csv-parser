@@ -6,14 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Reader {
-  private File file;
 
-  public Reader(File file) {
-    this.file = file;
-  }
-
-  public String readFile() throws IOException {
-    BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+  public String readFile(File aFile) throws IOException {
+    BufferedReader bufferedReader = new BufferedReader(new FileReader(aFile));
     StringBuilder sb = new StringBuilder();
     boolean fileEnd = false;
 
