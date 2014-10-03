@@ -31,18 +31,19 @@ public class CVSParser {
   private <T> List<T> matchObjects(List<String> fileRecords, Class<T> dClass, HashMap<String, Integer> headingIndexMap) throws IllegalAccessException, InstantiationException {
     ArrayList<T> recordObject = new ArrayList<T>();
     for (String record : fileRecords) {
-      String[] recordInCell = record.split(",");
+      String[] dataFields = record.split(",");
       T newInstance = dClass.newInstance();
-      assignCellsRecordsToFields(recordInCell, headingIndexMap, newInstance);
+      assignCellsRecordsToFields(dataFields, headingIndexMap, newInstance);
       recordObject.add(newInstance);
     }
     return recordObject;
   }
 
-  private <T> void assignCellsRecordsToFields(String[] recordInCell, HashMap<String, Integer> headingsMap, T newInstance) throws IllegalAccessException {
+  private <T> void assignCellsRecordsToFields(String[] dataFields, HashMap<String, Integer> headingsMap, T newInstance) throws IllegalAccessException {
     for (Field objectField : newInstance.getClass().getDeclaredFields()) {
       objectField.setAccessible(true);
-      String cellValue = recordInCell[headingsMap.get(prepareClassFieldNames(objectField))];
+      Integer fieldIndex = headingsMap.get(prepareClassFieldNames(objectField));
+      String cellValue = dataFields[fieldIndex];
       assignFieldAccordingToType(newInstance, objectField, cellValue);
     }
   }
