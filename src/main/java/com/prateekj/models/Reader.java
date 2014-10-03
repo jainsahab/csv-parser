@@ -20,13 +20,13 @@ public class Reader {
       } else
         fileEnd = true;
     }
-    deleteLastNewLineCharacter(sb);
+    deleteLastNewLineCharacters(sb);
     return sb.toString();
   }
 
-  private void deleteLastNewLineCharacter(StringBuilder sb) {
-    if(sb.toString().endsWith("\n"))
-      sb.deleteCharAt(sb.length()-1);
+  private void deleteLastNewLineCharacters(StringBuilder sb) {
+    if(!sb.toString().endsWith("\n")) return;
+    deleteLastNewLineCharacters(sb.deleteCharAt(sb.length() - 1));
   }
 
 

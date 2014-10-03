@@ -29,7 +29,7 @@ public class ReaderTest {
   public void shouldReadFileByOmittingLastNewLineCharacter() throws IOException {
     String expectedFileData = "roll,name,age\n1,Prateek,19";
 
-    String actualFileData = "roll,name,age\n1,Prateek,19\n";
+    String actualFileData = "roll,name,age\n1,Prateek,19\n\n\n\n";
     File aFile = new File("some-file.txt");
     FileOutputStream fos = new FileOutputStream(aFile);
     fos.write(actualFileData.getBytes());
