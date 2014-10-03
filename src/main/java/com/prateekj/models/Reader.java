@@ -28,6 +28,4 @@ public class Reader {
     if(!sb.toString().endsWith("\n")) return;
     deleteLastNewLineCharacters(sb.deleteCharAt(sb.length() - 1));
   }
-
-
 }

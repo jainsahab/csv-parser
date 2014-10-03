@@ -14,9 +14,7 @@ public class ReaderTest {
   @Test
   public void shouldReadFile() throws IOException {
     String actualFileData = "roll,name,age\n1,Prateek,19";
-    File aFile = new File("some-file.txt");
-    FileOutputStream fos = new FileOutputStream(aFile);
-    fos.write(actualFileData.getBytes());
+    File aFile = createFile("some-file.txt", actualFileData);
 
     Reader reader = new Reader();
     String expectedFileContent = reader.readFile(aFile);
@@ -30,13 +28,18 @@ public class ReaderTest {
     String expectedFileData = "roll,name,age\n1,Prateek,19";
 
     String actualFileData = "roll,name,age\n1,Prateek,19\n\n\n\n";
-    File aFile = new File("some-file.txt");
-    FileOutputStream fos = new FileOutputStream(aFile);
-    fos.write(actualFileData.getBytes());
+    File aFile = createFile("some-file.txt", actualFileData);
 
     Reader reader = new Reader();
     String data = reader.readFile(aFile);
 
     assertThat(data, is(expectedFileData));
+  }
+
+  private File createFile(String fileName, String actualFileData) throws IOException {
+    File aFile = new File(fileName);
+    FileOutputStream fos = new FileOutputStream(aFile);
+    fos.write(actualFileData.getBytes());
+    return aFile;
   }
 }
