@@ -28,24 +28,25 @@ public class CVSParser {
     return resultObjects;
   }
 
-  private <T> List<T> matchObjects(List<String> fileRecords, Class<T> dClass, HashMap<String, Integer> headingIndexMap) throws IllegalAccessException, InstantiationException {
+  private <T> List<T> matchObjects(List<String> fileRecords, Class<T> dClass, HashMap<String, Integer> headingIndexMap) throws InstantiationException, IllegalAccessException {
     ArrayList<T> recordObject = new ArrayList<T>();
     for (String record : fileRecords) {
       String[] dataFields = record.split(",");
-      T newInstance = dClass.newInstance();
-      assignCellsRecordsToFields(dataFields, headingIndexMap, newInstance);
+      T newInstance = assignCellsRecordsToFields(dataFields, headingIndexMap, dClass);
       recordObject.add(newInstance);
     }
     return recordObject;
   }
 
-  private <T> void assignCellsRecordsToFields(String[] dataFields, HashMap<String, Integer> headingsMap, T newInstance) throws IllegalAccessException {
+  private <T> T assignCellsRecordsToFields(String[] dataFields, HashMap<String, Integer> headingsMap, Class<T> dClass) throws IllegalAccessException, InstantiationException {
+    T newInstance = dClass.newInstance();
     for (Field objectField : newInstance.getClass().getDeclaredFields()) {
       objectField.setAccessible(true);
       Integer fieldIndex = headingsMap.get(prepareClassFieldNames(objectField));
       String cellValue = dataFields[fieldIndex];
       assignFieldAccordingToType(newInstance, objectField, cellValue);
     }
+    return newInstance;
   }
 
   private <T> void assignFieldAccordingToType(T result, Field objectField, String cellValue) throws IllegalAccessException {
