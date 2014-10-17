@@ -12,10 +12,10 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class CVSParser {
+public class CSVParser {
   private Reader reader;
 
-  public CVSParser() {
+  public CSVParser() {
     reader = new Reader();
   }
 

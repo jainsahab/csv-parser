@@ -14,12 +14,12 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class CVSParserTest {
-  private CVSParser cvsParser;
+public class CSVParserTest {
+  private CSVParser CSVParser;
 
   @Before
   public void setUp() throws Exception {
-    cvsParser = new CVSParser();
+    CSVParser = new CSVParser();
   }
 
   @Test
@@ -29,7 +29,7 @@ public class CVSParserTest {
     FileOutputStream fos = new FileOutputStream(aFile);
     fos.write(actualFileData.getBytes());
 
-    List<Person> persons = cvsParser.parse(aFile, Person.class);
+    List<Person> persons = CSVParser.parse(aFile, Person.class);
 
     assertThat(persons, hasSize(2));
     assertThat(persons.get(0), is(new Person().withRoll(1).withName("Prateek").withAge(19)));
@@ -43,7 +43,7 @@ public class CVSParserTest {
     FileOutputStream fos = new FileOutputStream(aFile);
     fos.write(actualFileData.getBytes());
 
-    cvsParser.parse(aFile, Person.class);
+    CSVParser.parse(aFile, Person.class);
   }
 
 }

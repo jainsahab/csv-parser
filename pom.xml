@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.prateekj</groupId>
-  <artifactId>cvs_parser</artifactId>
+  <artifactId>csv_parser</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <dependencies>
