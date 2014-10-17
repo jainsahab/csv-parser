@@ -50,7 +50,7 @@ public class CSVParser {
   }
 
   private <T> void assignFieldAccordingToType(T result, Field objectField, String cellValue) throws IllegalAccessException {
-    if(objectField.getType().getName().equals("int"))
+    if(objectField.getType().getName().toLowerCase().contains("int"))
       objectField.set(result, Integer.parseInt(cellValue));
     else
       objectField.set(result, cellValue);

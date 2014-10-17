@@ -14,7 +14,7 @@ public class Person {
   private String name;
 
   @Column(name = "age")
-  private int age;
+  private Integer age;
 
   public Person withRoll(int rollNo) {
     this.roll = rollNo;
